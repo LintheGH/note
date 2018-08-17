@@ -1,4 +1,3 @@
-# phase3 vue.js
 ## vue
 - ‘渐进式’、‘自底向上增量开发’
 
@@ -9,8 +8,7 @@
 	-  M:model(数据模型)
 	-  V：view（视图层）
 	-  C：controller（控制）
-  
-![Alt text](http://www.ruanyifeng.com/blogimg/asset/2015/bg2015020105.png)
+![Alt text](./bg2015020105.png)
 
 >    基本的MVC模式中所有通信单向，view发送指令到controller，controller完成业务逻辑要求model更改转改，完成更新的model反映到view，用户得到反馈。根据互动模式的不同产生改变，如用户直接通过controller控制数据反映到view层而view和controller之间不产生联系；用户既控制view层又可以控制controller层，通过view层发送指令让model层发生改变，通过controller控制view和model层
 
@@ -19,19 +17,17 @@
 	- V：view
 	- P：presenter
 
-![Alt text](http://www.ruanyifeng.com/blogimg/asset/2015/bg2015020109.png)
-
+![Alt text](./bg2015020109.png)
 >  controller 改为了presenter，改变了通信方向。M层和V层不联系，所有联系之间都是双向的（单向双箭头），presenter层非常厚，而view层非常薄
 
 -  MVVM分为
 	-  M:model（数据模型）
 	-  V:view（视图层）
 	-  VM：viewmodel
- 
- 
- ![Alt text](http://www.ruanyifeng.com/blogimg/asset/2015/bg2015020110.png)
+ ![Alt text](./bg2015020110.png)
 
->  V和VM采用双向数据绑定方式，view改变自动反应到viewmodel，反之亦然，model和view之间没有直接联系
+
+>  V和VM采用双向绑定方式，view改变自动反应到viewmodel，反之亦然，model和view之间没有直接联系
 
 - MVVM、MVC的区别
 	- 
@@ -44,7 +40,7 @@
 
 ```
 
-### 关于Object.defineProperty()方法
+## 关于Object.defineProperty()方法
 - 语法：`Object.defineProperty(obj,name,descriptor)`
 	-  obj：必需。目标对象 
 	-  prop：必需。需定义或修改的属性的名字
@@ -127,7 +123,8 @@
 			-  `<div v-bind:class="[isActive ? activeClass : '', errorClass]"></div>`
 			-  `<div v-bind:class="[{ active: isActive }, errorClass]"></div>`
 
--  v-if  控制元素是否显示
+-  v-if  控制元素是否显示、
+	-  
 -  v-cloak
 	-  当元素上加上v-cloak指令的时候，在vue没有加载的时候，这个指令就相当于p标签的一个标签属性，当vue加载完成后，会将这个指令去掉
 	-  依靠这个属性可以实现防止{{}}闪烁
@@ -136,11 +133,36 @@
 	-  v-text会将绑定的dom的innerText改成指定的数据
 
 -  v-html
-	-  v-html和v-text唯一的区别就是可以解析标签，慎用，性能耗费比v-text高
+	-  v-html和v-text唯一的区别就是可以解析标签，**慎用，性能耗费比v-text高**
 
 
 ## 计算属性和监听
--  watch 监听
+- watch 监听
+	- watch 可以监听数据的变化
+	```
+	 new Vue({
+	    el:"#app",
+	     data: {
+	         username: '',
+	         message: ''
+	     },
+	     watch: {//当username数据变化之后会执行，new_val为更改后的值，old_val为更改前的值
+	         username: {
+	             immediate: true,//默认执行一次
+	             deep:true, //深度监听
+	             handler (new_val, old_val) {
+	                 console.log('哈哈')
+	                 if ( new_val.length > 12 || new_val.length < 6 ) {
+	                     this.message = '用户名必须大于6位，小于12位'
+	                 }else {
+	                     this.message = ''
+	                 }
+	             }
+	         }
+	     }
+	 })
+	```
+
 -  计算属性
 	-  根据一个现有数据去生成一个新数据，并且这两个数据直接会建立永久的关系，并且会建立缓存，当无关数据改变的时候，不会重新计算而是直接使用缓存中的值!!!
 	-  
@@ -148,10 +170,19 @@
 
 ## 全局API
 
--  Vue.filter
+-  `Vue.filter()`
 	-  将某种格式的数据在输出的时候转换成另一种格式，原数据不会更改
 	-  
-
+-  `Vue.nextTick([callback,context])`
+	-  在下次 DOM 更新之后执行延迟回调函数。在修改数据之后立即执行这个方法，可以获取更改后的 DOM 
+	```
+	vm.msg = 'Hello'//数据更改
+	Vue.nextTick(function(){'some JS'})
+	```
+	-  当没有参数时返回一个 Promise 对象
+	```
+	Vue.nextTick().then((res)=>{}).catch((err))
+	```
 
  **回流和重绘（reflow、repaint）**
 >  修改数据或者直接操作DOM，导致浏览器重新渲染的两种状况，都会影响性能
@@ -221,6 +252,7 @@
             </ul>
 		</template>
 		<template id="app-movies-item">
+		
 			<li>
                 {{ title }}	
             </li>	
@@ -250,6 +282,7 @@
 		-  字符串 (例如：`template: '...'`)
 		-  单文件组件 (`.vue`)
 		-  `<script type="text/x-template">`
+	-  `is`可以用来做 tab 标签切换
 >  组件名：遵循 W3C 规范，自定义组件名全小写字母必须包含连字符（自定义元素规范）
 >  
 
@@ -263,12 +296,36 @@
 	- 数据验证，父组件传递过来的数据需要做数据验证，遇到错误类型会在控制台中显示出来
 	```javascript
 	props: {
-	  title: String,
-	  likes: Number,
-	  isPublished: Boolean,
-	  commentIds: Array,
-	  author: Object
-	}
+	    // 基础的类型检查 (`null` 匹配任何类型)
+	    propA: Number,
+	    // 多个可能的类型
+	    propB: [String, Number],
+	    // 必填的字符串
+	    propC: {
+	      type: String,
+	      required: true
+	    },
+	    // 带有默认值的数字
+	    propD: {
+	      type: Number,
+	      default: 100
+	    },
+	    // 带有默认值的对象
+	    propE: {
+	      type: Object,
+	      // 对象或数组且一定会从一个工厂函数返回默认值
+	      default: function () {
+	        return { message: 'hello' }
+	      }
+	    },
+	    // 自定义验证函数
+	    propF: {
+	      validator: function (value) {
+	        // 这个值必须匹配下列字符串中的一个
+	        return ['success', 'warning', 'danger'].indexOf(value) !== -1
+	      }
+	    }
+	  }
 	```
 	- **单向数据流：数据只能从父级组件流向子级组件**
 
@@ -277,11 +334,28 @@
 		-  **父组件重新设置data会触发 Vue 重新渲染 DOM ，重新给子组件传入新数据**
 	-  组件间通信通过传递事件，子组件触发事件实现
 	-  组件能够实现子组件事件绑定和触发，其实就是组件能够像普通元素一样绑定事件
+		-  通过内建的 `$emit` 方法传入事件名触发父级组件的事件
+```
+//子组件中
+<button v-on:click="$emit('enlarge-text')">
+ Enlarge text
+</button>
+//父组件中
+<blog-post
+ v-on:enlarge-text="postFontSize += 0.1"
+></blog-post>
+```
+- 
 	-  `ref`  ： `string`类型，给元素或组件注册引用信息，引用信息会注册在父组件的 $refs 对象上，通过 `this.$refs.注册名` 就可调用 
+-  非父子组件间通信：`event_bus` 事件总线
+	-  利用空实例
+	-  
+-  组件绑定原生事件：`.native`修饰符
+	-  组件根元素无法触发绑定的事件时，使用 `$listeners` 结合`v-on:'$listener'` 将所有事件绑定到特定元素上
 -  `slot` 插槽
 	-  component-tag 中的内容 Vue 在编译的时候，会忽略，如果要实现显示内容的效果，可以用`<slot></slot>`来接收内容
 	-  具名插槽
-		-  通过 `slot` 的特殊属性 `name` 命名 slot 来定义多个插槽，在组件模板中使用的时候在 tag 内添加对应的 name 即可，`<app-template><h1 slot="name">标题1</h1></app-template>`
+		-  通过 `slot` 的特殊属性 `name` 命名 slot 来定义多个插槽，在组件模板中使用的时候在 tag 内添加对应的 name 即可，`<app-template><h1 slot="name">标题1</h1></app-template>` 或 `<app-template><template slot="name"></template></app-template>`
 
 ## 过渡、动画
 -  `transition`
@@ -301,3 +375,78 @@
 		-  `leave-class`
 		-  `leave-active-class`
 		-	`leave-to-class `(2.1.8+)
+
+## render 函数
+
+
+
+## 全局属性
+> 伴随实例化 Vue 对象而来的属性，实例名称根据具体而定，这里假定为 vm
+
+- vm.$slots
+	- 类型： `[name:string,...]`
+
+## 生命周期，钩子函数
+
+-  **实例生命周期**：组件的声明周期分为三个阶段：初始化、运行中、销毁
+	-  组件实例化开始，到出现在页面中 => 初始化
+	-  组件使用过程中 => 运行中
+	-  组件从准备销毁到销毁之后 => 销毁阶段
+- **生命周期的钩子函数**：在生命周期中有很多特殊的时间点，有一些函数会在这些时间点上自动执行，这些函数称为钩子函数
+![enter image description here](https://cn.vuejs.org/images/lifecycle.png)
+
+### 整个生命周期及其钩子函数的作用
+-  **初始化声明周期、添加事件监听**：使用组件时，会马上实例化组件得到一个组件的实例，然后给实例添加一些事件监听和初始化生命周期，然后执行 `beforeCreate` 钩子函数
+	>  **钩子函数 `beforeCreate`** ：
+	> 此时数据没有挂载，DOM 没有渲染
+	
+-  **挂载数据、绑定数据监听**：然后执行 `created`
+ 	>  **钩子函数 `created` **：
+	>  特点：数据挂载，还未渲染 DOM ，此时修改数据不会触发 updated 函数，即不会重新渲染 DOM 
+	>  作用：可以做一些初始数据的获取、更新
+
+-  **查找模板，编译虚拟 DOM **:查找模板，将其编译成虚拟 DOM 结构，将其放入到 render 函数中等待渲染，然后执行 `beforeMount` 钩子函数
+	>  **钩子函数 `beforeMount`**：
+	>  特点和作用跟 `created`一样
+	
+- **渲染虚拟 DOM 到页面中，挂载$el 属性**：渲染出真实dom，然后执行mounted钩子函数，此时，组件已经出现在页面中，数据、真实dom都已经处理好了,事件都已经挂载好了
+	> **钩子函数 `mounted`**：
+	> 特点：能访问到数据，也能操作真实 DOM ，此时再去修改数据会触发 updated 函数，重新渲染 DOM
+	> 作用：操作真实 DOM ，实例化一些组件
+
+-  **运行阶段更新数据**：此时进入运行阶段，更改数据会马上触发 `beforeUpdate` 
+	>  特点：数据已经更改，DOM 没有更新
+	>  作用：没有什么作用，**不能更改数据，会在成死循环**
+
+-  **重新渲染**：创建虚拟 DOM ，重新渲染，执行 updated
+	>  **钩子函数`updated`**：
+	>  特点：dom 已经更新
+	> 作用：依然**不能修改数据**，可以做一些 DOM  修改
+
+-  **进入销毁阶段**：`vm.$destroy`实例的方法被调用时进入销毁阶段，比如切换插件，路由跳转等会触发 vm.$destroy 执行，马上执行钩子函数 `beforeDestroy`
+	> **钩子函数`beforeDestroy`**：做一些善后工作，比如清除定时器
+	 
+-  **销毁**：清除事件、数据监听、绑定，只留下 DOM 结构的空壳，执行 `destroyed`
+	>  **钩子函数`destroyed`**和 beforeDestroy 一样
+
+## Vue CLI 脚手架
+-  安装 vue-cli （脚手架）
+	1. 全局安装 vue-cli：`npm install --global vue-cli`
+	2. 创建一个基于 webpack 模板的新项目：`vue init webpack my-project`（init之后可以定义模板的类型）
+	3. 安装依赖：`cd my-project`、 `npm install`、 `npm run dev`
+
+-  build 文件加放置 webpack 的配置文件，其中 
+	-  webpack.base.conf.js 是通用配置
+	-  webpack.dev.conf.js 是开发启动项目的配置文件
+	-  webpack.prod.conf.js 开发完成打包配置
+-  config 文件夹内存放抽离出来封装的配置文件，如开发服务器的配置
+-  src 开发目录
+	-  webpack 是一个模块打包工具，开发中会写很多模块，这些模块相互依赖，最后放入到一个文件中，此文件为入口文件
+	-  main.js 入口文件
+	-  单文件组件：后缀 .vue 的文件是一个组件，即一个文件为一个组件，单文件组件包含模板，逻辑，样式，因此便于更新、维护和复用。vue-cli最终会将 *.vue 文件进行编译，脚手架在编译单文件组件的时候会直接将模板编译成 createElement ，用户不必在浏览器中进行编译，提高了页面渲染熟读，提高性能
+	-  static 静态文件目录
+	-  assets 目录
+		-  在 assets 中引入的图片，会被转换成 base64 编码格式，但是体积较大的文件（> 10k）不会转换
+
+## axios 
+
