@@ -120,3 +120,13 @@
     import MyClass from 'MyClass';//可以以任意名称导入
     let o = new MyClass();
     ```
+## `...`语法
+- `...option` 作为函数中的形参时，option 是一个数组，接收多个参数
+    ```javascript
+    // 定义
+    let fn = function (param, ...option) {
+        return option
+    }
+    // 调用
+    fn('a', 'b', 'c')// 结果为 ['b', 'c']
+    ```
