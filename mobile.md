@@ -1,3 +1,9 @@
+---
+title: mobile开发
+tags: viewport,mobile
+notebook: framework
+---
+
 ### mobile 开发
 
 - viewport
@@ -98,3 +104,11 @@
         - 上下层使用click（fastclick）
         - 使用缓动动画，是上层元素tap后以动画形式消失
         - 使用中间层，在上层元素和下层元素之间创建一个透明层，给透明层添加click
+
+
+#### 地图与定位
+- 后端定位
+    根据前端请求中所携带的IP地址来进行定位
+- H5 定位
+    navigator.geolocation.getCurrentPosition, 基于google的服务
+- 利用第三方的平台进行定位
