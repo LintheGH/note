@@ -56,7 +56,10 @@
     - tap事件
         封装的自定义事件，touchestart 和 touchend的 时间间隔短，移动距离小，即可判断为点击 tap 事件
         ```javascript
-        $.fn.extend(
+        // $.fn.extend(object)
+        $.fn.extend({
+
+        
             function tap (callback) {
                 let sp = {x: 0, y: 0}
                 let isMove;
@@ -78,7 +81,7 @@
                 })
                 return this
             }
-        )
+        })
         $('.box').tap(function(e){
             $(this).css({'backgroundColor':'red'})
         })
