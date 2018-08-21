@@ -1,9 +1,3 @@
----
-title: mobile开发
-tags: viewport,mobile
-notebook: framework
----
-
 ### mobile 开发
 
 - viewport
