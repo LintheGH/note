@@ -434,7 +434,18 @@
 	1. 全局安装 vue-cli：`npm install --global vue-cli`
 	2. 创建一个基于 webpack 模板的新项目：`vue init webpack my-project`（init之后可以定义模板的类型）
 	3. 安装依赖：`cd my-project`、 `npm install`、 `npm run dev`
+- vue-cli没有内置sass编译，我们需要自己修改配置
 
+	1. 下载对应工具：node-sass(4.0.0) sass-loader
+
+	2. 在build目录下的webpack.base.conf.js中的module.rule里添加如下配置
+		```
+		{
+		    test: /\.scss$/,
+		    loader:'style-loader!css-loader!sass-loader'
+		} 
+		```
+	3. 在需要使用scss代码的组件的style标签中添加 lang='scss'
 -  build 文件加放置 webpack 的配置文件，其中 
 	-  webpack.base.conf.js 是通用配置
 	-  webpack.dev.conf.js 是开发启动项目的配置文件
