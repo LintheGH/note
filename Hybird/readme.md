@@ -33,6 +33,7 @@ user-select:none;
 window.navigator.userAgent 对象
 
 ### 利用工具进行纯H5的混合开发
+
 利用H5页面来实现应用程序的所有逻辑，然后使用工具将web应用打包成原生安装包
   - 目前较为流行的工具
     - phonegap + cordova，phonegap提供打包、测试，cordova调用设备原生功能
@@ -43,3 +44,15 @@ window.navigator.userAgent 对象
       - 项目中的路径全部改为相对路径
       - 配置项目目录中的manifest.json文件
       - 
+### H5+ 开发
+#### 采用H5+ + mui 开发 HybridApp
+H5+，提供给H5页面调用设备原生功能的能力, native的部分为window上挂载了plus的对象，这个plus对象上就拥有很多调用设备原生功能的方法，例如： window.plus.camera.getCamera
+- mui
+  - 在app开发中，若要使用HTML5+扩展api，必须等plusready事件发生后才能正常使用，mui将该事件封装成了mui.plusReady()方法，涉及到HTML5+的api，建议都写在mui.plusReady方法中
+  - 
+  - mui 事件管理
+    - 事件绑定： el.addEventListener()、els.on()批量元素绑定
+    - 事件触发:
+      - mui.triggle()  触发DOM事件
+      - mui.fire() 触发窗口webview的事件
+    - 事件取消：el.off()
