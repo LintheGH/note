@@ -23,6 +23,7 @@
       });
       ```
       > 其中 `signature`为根据`url`、`jsapi_ticket`(用户授权通过微信的access_token调用接口获取到)、`noncestr`（随机字符串）、`timestamp`(时间戳)组合通过`sha1`加密得到的字符串，因为`ignature`的安全级别很高，都是保存在服务器中，需要时请求后端接口得到
+      >
       > `jsApiList`: 写入需要调用的接口，如
       > ```javascript
       > jsApiList: ['scanQRCode', 'chosseImage']
