@@ -49,10 +49,20 @@ window.navigator.userAgent 对象
 H5+，提供给H5页面调用设备原生功能的能力, native的部分为window上挂载了plus的对象，这个plus对象上就拥有很多调用设备原生功能的方法，例如： window.plus.camera.getCamera
 - mui
   - 在app开发中，若要使用HTML5+扩展api，必须等plusready事件发生后才能正常使用，mui将该事件封装成了mui.plusReady()方法，涉及到HTML5+的api，建议都写在mui.plusReady方法中
-  - 
+  - ​
   - mui 事件管理
-    - 事件绑定： el.addEventListener()、els.on()批量元素绑定
+    - 事件绑定： `el.addEventListener()`单个元素绑定、`els.on()`批量元素绑定
     - 事件触发:
-      - mui.triggle()  触发DOM事件
-      - mui.fire() 触发窗口webview的事件
+      - `mui.triggle()`  触发DOM事件
+      - `mui.fire()` 触发窗口webview的事件,webview串口绑定事件用window.addEventListener即可
     - 事件取消：el.off()
+  - H5+ (plus对象)
+    - 创建窗口 `plus.webview.create(url,id,style,extras)`创建后需要.show()显示
+    - 创建窗口并显示：`plus.open(url,id,style,extras)`
+    - 隐藏窗口 `plus.webview.hide(id,animate,duration,extras)`
+    - 显示窗口`plus.webview.show(id,animate,duration,extras)`
+    - 获取窗口：`plus.webview.getWebviewById(id)`
+    - 获取首页窗口: `plus.getLaunchWebview()`
+    - 获取当前窗口：`plus.webview.currentWebview()`
+    - webview（窗口）对象的方法：操作加载HTML页面的窗口
+      - ​
