@@ -1,8 +1,4 @@
----
-title:Vuex 状态管理工具
-tags:vuex
-notebook:framework
----
+
 ## vuex 状态管理工具
 - 状态管理工具:集中式地管理所有组件共享状态，解决多组件状态共享问题
 - 单个组件的单向数据流
@@ -117,6 +113,9 @@ notebook:framework
     actions: {
       increment (context) {//context 有 store 实例的方法和属性
         context.commit('increment')
+      },
+      incrementAsync(context.payload) {// 第二个参数接收传递过来的payload
+        context.commit(payload)
       }
     }
     //在组件中触发
