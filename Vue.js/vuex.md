@@ -64,11 +64,15 @@
   - getters：
     - 有的时候需要根据一条现有的状态派生新状态，比如，根据 当前用户的购物车里的商品数据，需要得到用户购物车的总价钱，我们就可以利用getters来派生数据
     ```javascript
-    getters: {
-      doubleNubmer (state) {
-        return state.number*2
+    const store = new Vuex.store({
+      state: {},
+      getters: {
+        doubleNubmer (state) {
+          return state.number*2
+        }
       }
-    }
+    })
+    
     // 组件中计算属性调用，映射
     computed: {
       doubleNubmer () {
