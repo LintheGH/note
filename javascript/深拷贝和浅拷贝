@@ -1,0 +1,67 @@
+---
+title: javascript对象的深拷贝
+tags: object, 深拷贝
+notebook: JavaScript
+---
+### javascript的数据类型
+  - javascript的数据类型有三种：
+    - 基本数据类型
+      - Number/NaN
+      - String
+      - Boolean
+    - 引用数据类型
+      - Object
+      - Array
+    - 特殊数据类型
+      - undefined
+      - null
+  > 其中基本数据类型和特殊数据类型保存在内存中的栈中，引用数类型保存在内存的堆中
+### javascript对象的深拷贝
+  - 浅拷贝
+    浅拷贝是对象共用一个内存地址，修改对象内容会影响对此内存地址引用的对象
+    ```javascript
+    var obj1 = {a: 1, b: 2, c: 3}
+    var obj2 = obj1
+    obj1.b = 4
+    console.log(obj2.b)//4
+    ```
+  - 深拷贝
+    深拷贝既是创建一个新的内存地址存放数据，原数据和新数据之间不会相互影响
+    - 深拷贝的方法
+      - Object.assign()方法
+        ```javascript
+        var obj1 = {a: 1, b: 2, c: 3}
+        var obj2 = Object.assign({}, obj1)
+        obj1 === obj2 // false
+        ```
+        > Object.assign()作用是将源对象的所有可枚举属性，复制到目标对象上，用法：Object.assign(target, source1, source2)
+        > 对象的属性有可枚举和不可枚举之分，由enumerable的值决定，影响 for...in / Object.keys / JSON.stringify 
+        > 包装对象属性是不可枚举的
+        > Object.assign() 实现的是一层深拷贝，源对象中的对象依然是拷贝了引用地址
+
+      - 利用 JSON.stringiy() 和 JSON.parse() 深拷贝
+        ```javascript
+        var obj1 = {a: 1, b: 2, c: 3}
+        var obj2 = JSON.parse(JSON.stringify(obj1))
+        obj2 === obj1 // false
+        ```
+      - 利用 Object.create() 方法创建一个深拷贝对象
+        ```javascript
+        var ojb1 = {a: 1, b: 2, c: 3}
+        var obj2 = Object.create(obj1)
+        obj1 === obj2 // false
+        ```
+      - 手动复制
+        ```javascript
+        var obj1 = {a: 1, b: 2, c: 3}
+        var copy = function(oldObject) {
+          var newObject = {}
+          for (let key in oldObject) {
+            newObject[key] = oldObject[key]
+          }
+          return newObject
+        }
+        var obj2 = copy(obj1)
+        console.log(obj2)
+        obj2 === obj1 // false
+        ```
