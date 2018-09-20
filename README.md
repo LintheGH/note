@@ -1,4 +1,4 @@
 # note
 
 
-for recode somthing
+for recoding somthing
