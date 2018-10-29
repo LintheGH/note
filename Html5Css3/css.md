@@ -1,0 +1,8 @@
+- 自动换行
+  - word-break: 
+    - normal：使用浏览器默认的换行行为
+    - break-all：允许在单词内换行
+    - keep-all：只能在半角空格或连字符处换行
+  - word-wrap: 
+    -  normal: 只允许在断字点换行（保持浏览器默认换行行为）
+    - break-word：在长单词或URL地址内部进行换行
