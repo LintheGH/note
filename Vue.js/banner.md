@@ -136,7 +136,7 @@ export default {
       handler(val, oldVal) {
         if(!!val) {
           let scale = 0.83
-          this.changePosition(val, scale)
+          this.changePosition(val, scale) // imgs内的item为对象，引用类型
         }
       },
       deep: true
