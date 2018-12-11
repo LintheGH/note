@@ -118,11 +118,17 @@ export default {
       handler(val, oldVal) {
         if (!!val) {
           let scale = 0.83
+
+          // 初始化位置，建立对象地址联系，但是改变对象属性值视图不重新渲染
+          // 改变 IMG 的数据，渲染showImg 而非 IMG，如渲染 IMG 则图片视图会重新渲染，达不到动画效果
           this.showImg = this.changePosition(val, scale)
           this.IMG = this.changePosition(val, scale).map((item, index) => {
             item._index = index
             return item
           })
+          
+          // 初始化分页指示
+          this.paginations = []
           val.forEach((item, index) => {
             this.paginations.push(index)
           })
@@ -267,7 +273,7 @@ export default {
       setTimeout(()=> {
         this.changing = false
       }, 400)
-      this.currentIndex = arr[0]._index
+      this.currentIndex = arr[0]._index // 更改响应式数据，使更新视图，图片位置从而得到改变
       return arr
     },
 
