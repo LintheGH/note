@@ -15,7 +15,7 @@ notebook: other
         > 之后进入运行阶段
         3. 运行阶段
             1. componentWillReceiveProps()
-            2. shouldComponentUpdate()
+            2. shouldComponentUpdate(nextProps, nextState)
             > 函数返回true，继续下面的流程，组件更新；函数返回false，组件不更新
             3. componentWillUpdate()
             4. render()组件重新render
