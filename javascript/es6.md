@@ -1,6 +1,11 @@
+---
+title: ES6
+tags: ES6, javascript
+notebook: JavaScript
+---
+
 ## ES6 model 模块语法
 ---
-[TOC]
 > ES6 模块语法采用尽量**静态化**方法，使得在编译时就能够确定模块依赖关系。
 > 由于采用静态化的方法，使得导入`import` 和导出`export` 时如果在语句中会报错，导入导出要在模块顶层任意位置
 
@@ -121,6 +126,7 @@
     let o = new MyClass();
     ```
 ## `...`语法
+---
 - `...option` 作为函数中的形参时，option 是一个数组，接收多个参数
     ```javascript
     // 定义
@@ -129,4 +135,67 @@
     }
     // 调用
     fn('a', 'b', 'c')// 结果为 ['b', 'c']
+    ```
+
+
+## 数组方法扩展
+---
+- `find()`  数组实例方法
+  > 返回第一个符合条件的成员
+  
+  ```javascript
+  [1, 4, -5, 10].find((n) => n < 0) // -5
+
+  [1, 5, 10, 15].find(function(value, index, arr) {
+      return value > 9;
+  }) // 10
+
+  // 绑定了this
+  function f(v){
+    return v > this.age;
+  }
+  let person = {name: 'John', age: 20};
+  [10, 12, 26, 15].find(f, person);    // 26
+
+  ```
+
+  - find方法的回调函数可以接受三个参数，依次为当前的值、当前的位置和原数组。
+
+  - find 方法每次遍历，都要执行判断函数
+
+  - 可以接受第二个参数，用来绑定回调函数的this对象。
+
+  - `findIndex()` 和 `find()`实例方法类似，返回第一个符合条件成员的索引
+
+- `fill()`数组实例方法
+  > 使用给定值，填充指定数组
+  
+  - 填充数组
+    ```javascript
+    ['a', 'b', 'c'].fill(7)
+    // [7, 7, 7]， 元素组中的成员会被替换
+
+    new Array(3).fill(7)
+    // [7, 7, 7]
+
+    ```
+  
+  - 接受第二、三个参数，指定替换元素的位置
+    ```javascript
+    ['a', 'b', 'c'].fill(7, 1, 2)
+    // ['a', 7, 'c']
+    ```
+    表示数值7替换掉索引1开始，2结束之前的元素
+
+  - 如果填充的类型为对象，那么被赋值的是同一个**内存地址的对象**，而不是深拷贝对象。
+    ```javascript
+    let arr = new Array(3).fill({name: "Mike"});
+    arr[0].name = "Ben";
+    arr
+    // [{name: "Ben"}, {name: "Ben"}, {name: "Ben"}]
+
+    let arr = new Array(3).fill([]);
+    arr[0].push(5);
+    arr
+    // [[5], [5], [5]]
     ```
