@@ -9,5 +9,5 @@ notebook: other
 
 #### 删除 automator 的工作流程
 1. 打开 automator 选择菜单的文件 -> 打开 -> 可以看到之前创建成功的工作流程 -> 删除即可 
-  > 在 finder 中这个 service 文件夹是隐藏的
-  > mac os 显示隐藏文件的方法 `shift + command +  .`
+    > 在 finder 中这个 service 文件夹是隐藏的
+    > mac os 显示隐藏文件的方法 `shift + command +  .`
