@@ -41,5 +41,8 @@ The key's randomart image is:
 
 如果想登陆远端，则需要将rsa.pub里的秘钥添加到远端。
 
+3.查看公钥
+cat id_rsa1.pub
+4.复制里面的公钥到远程git服务器
 二、如果之前配置过 
 则直接按上一点中的 2.生成秘钥 进行
