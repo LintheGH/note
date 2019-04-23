@@ -28,3 +28,11 @@ new webpack.ProvidePlugin({
 })
 
 ```
+在项目中
+```
+componentDidMount() {
+    this.setState({
+        list: _.get(data, 'list', [])
+    })
+}
+```
