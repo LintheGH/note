@@ -12,6 +12,9 @@
     //user-scalable:是否允许用户缩放 no/yes
     <memta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1,user-scalable=no">
     ```
+    设置`viewport`之后就可以直接使用`px`作为单位，移动设备会自动根据屏幕的宽度，设置实际显示的像素大小
+
+    > 设置 `width=device-width` 之后，1px = 1/屏幕的宽度， 而没设置的 1px = 1/clientWidth， 在设备上的显示效果会根据设备的 `dpr` 进行变更。设置 `width=device-width` 之后，宽度较大的设备会在横向上显示更多的内容，如果需求需要不同宽度的设备显示一样多的内容，则需要再设置html的font-size，页面单位使用`rem`
 
 - 设备屏幕
     -  移动设备的屏幕都是 retina 屏（视网膜高清屏），retina 屏幕有一个属性叫“设备缩放比（dprr）”
