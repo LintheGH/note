@@ -20,8 +20,17 @@
 </head>
 <body>
     <div class="content">内容</div>
+    <a href="javascript:">cookie</a>
 </body>
 </html>
 <script>
     console.log(document.getElementsByClassName('content')[0].offsetWidth)
+    document.querySelector('.content').onclick = function(){
+        console.log('content')
+        document.cookie = "data={b:2};b=2"
+    }
+    document.querySelector('a').onclick = function() {
+        console.log('123')
+        document.cookie = "data={a: 1}"
+    }
 </script>
