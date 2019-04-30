@@ -101,7 +101,9 @@ function Example() {
         }
         ```
         > `useEffect` 中的解绑会在每次组件更新/卸载后，在`useEffect`中的操作执行前执行，组件卸载只会执行副作用的解绑函数，可以做一些事件的取消监听
+
         > `useEffect` 是一个异步的函数，不会阻塞页面更新
+        
         > `useLayoutEffect` 是一个`useEffect`的同步版本函数，其使用方法和`useEffect`一样
 
     - 跳过一些不必要的副作用
