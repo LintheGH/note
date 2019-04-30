@@ -118,6 +118,6 @@ function Example() {
             document.title = `You clicked ${count} times`;
         }, [count]); // 只有当count的值发生变化时，才会重新执行`document.title`这一句
         ```
-    - Hooks 使用的一些规则
-        1.  只在函数组件的最上层使用 `Hooks`,不得在循环、判断、函数中使用Hooks,让多次调用的`useState``useEffect`有一个确定的顺序
-        2.  只在函数组件中使用`Hooks`
+- Hooks 使用的一些规则
+    1.  只在函数组件的最上层使用 `Hooks`,不得在循环、判断、函数中使用Hooks,让多次调用的`useState``useEffect`有一个确定的顺序
+    2.  只在函数组件中使用`Hooks`
