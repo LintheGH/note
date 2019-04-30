@@ -22,3 +22,6 @@ notbook: other
     4. 上传目录到服务器 `scp -r local_dir username@servername:remote_dir`
         例如：`scp -r test root@192.168.0.101:/root/` 把当前目录下的test目录上传到服务器的/root/ 目录
 - 
+
+
+### 

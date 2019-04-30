@@ -146,3 +146,51 @@ react-router的使用
         - `callback`: 回调函数，该函数调用时会传一个require参数
         - `chunkName`: 模块名，用于构建时生成文件时命名使用
       - 注意点：`requi.ensure`的模块只会被下载下来，不会被执行，只有在回调函数使用`require(模块名)`后，这个模块才会被执行。
+
+- 路由的按需加载
+  - 定义加载组件：
+    ```javascript
+    import React, { Component } from "react";
+
+    export default function asyncComponent(importComponent) {
+      class AsyncComponent extends Component {
+        constructor(props) {
+          super(props);
+
+          this.state = {
+            component: null
+          };
+        }
+
+        async componentDidMount() {
+          const { default: component } = await importComponent();
+
+          this.setState({
+            component: component
+          });
+        }
+
+        render() {
+          const C = this.state.component;
+
+          return C ? <C {...this.props} /> : null;
+        }
+      }
+
+      return AsyncComponent;
+    }
+    ```
+  - 路由表中使用加载组件：
+    ```javascript
+    const Buttons = asyncComponent(() => import("./button"));
+    ```
+  - babel 配置
+    ```javascript
+    "presets": [
+      [
+        "es2015"
+      ],
+      "stage-1", // 应用了es7的语法，所以必须有这个配置
+      "react"
+    ],
+    ```
