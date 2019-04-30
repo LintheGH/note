@@ -41,6 +41,10 @@ function Example() {
         - 第二个值`useState(0)[1]`是改变状态state的方法
             - `setCount`是改变组件状态的方法
                 - 参数：接收的参数即是改变后的`状态`，接收后react会直接覆盖上一次的state
+                    - `function`参数：当传入`useState(0)[0]`的参数是一个函数，**这个函数可以接收一个`previousState`**,返回值是新的`state`值
+                        ```javascript
+                        <button onClick={() => setCount(prevCount => prevCount + 1)}>+</button>
+                        ```
                 - 返回：viod
         - 可以多次使用`useState`
             ```javascript
@@ -50,6 +54,7 @@ function Example() {
                 const [todos, setTodo] = useState([{text: 'do someting'}])
             }
             ```
+        - 
 - `useEffect` 副作用钩子
     ```javascript
     import { useState, useEffect } from 'react';
