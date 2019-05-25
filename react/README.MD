@@ -233,18 +233,18 @@ JSX 借鉴了 xml 的语法，但是因为是 javascript 语法，所以应遵�
   - componentDidMount () {}
     - 页面中生成真实的 DOM ，可以做 DOM 相关的操作
 - 组件运行阶段钩子函数
-  - componentWillReceiveProps (nextProps, nextState) {}
+  - componentWillReceiveProps (nextProps) {}
     - 这时得知属性的变化，执行对应操作
-    - 形参 nextProps 和 nextState 是新的数据，而 this.props 和 this.state 仍然为更改前的数据
+    - 形参 nextProps 是新的数据，而 this.props 和 this.state 仍然为更改前的数据
   - shouldComponentUpdate (nextProps, nextState) {}
     - componentWillReceiveProps 钩子后执行
     - 函数返回值为 true 时，组件才更新，false 时不会更新，当代码中书写了这个函数时，默认会返回 false 
     - 接收新的数据 nextProp nextState ，可以根据新数据和原数据对比，控制组件是否更新
-  - componentWillUpdate
+  - componentWillUpdate(nextProps, nextState)
     - 组件马上更新，在函数内不要更新状态，否则**死循环**
   - render () {}
     - 组件重新渲染
-  - componentDidUpdate () {}
+  - componentDidUpdate (preProps, preState) {}
     - 更改完成，页面重新生成 DOM 
 - 组件销毁阶段
   - componentWillUnmount () {}
