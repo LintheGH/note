@@ -44,3 +44,9 @@ notebook: other
 
 - umi
     - 
+
+
+### ajax复习，文件时上传的实现
+### webgl
+### 多媒体
+### svg canvas

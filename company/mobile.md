@@ -45,8 +45,146 @@
             375 / 100 = clientWidth / ?;
             ? = clientWidth / 3.75;
             ```
-        3. 调整 viewport 的大小，1 和 2 两种方式设定的 rem 大小在测量设计稿的时候需要除以 2 再根据换算成 rem ，而调整 viewport 为浏览器大小的两倍，则不再需要除以 2 
+        3. 调整 viewport 的大小，1 和 2 两种方式设定的 rem 大小在测量750宽度设计稿的时候需要除以 2 再根据换算成 rem ，而调整 viewport 为浏览器大小的两倍，则不再需要除以 2 
 
+
+#### 淘宝flexible结合postcss-plugin-px2rem配置基于webpack的移动端rem布局
+- 在入口文件加入动态计算rem的代码
+```javascript
+(function (win, lib) {
+      var doc = win.document;
+      var docEl = doc.documentElement;
+      var metaEl = doc.querySelector('meta[name="viewport"]');
+      var flexibleEl = doc.querySelector('meta[name="flexible"]');
+      var dpr = 0;
+      var scale = 0;
+      var tid;
+      var flexible = lib.flexible || (lib.flexible = {});
+      if (metaEl) {
+        console.warn('将根据已有的meta标签来设置缩放比例');
+        var match = metaEl.getAttribute('content').match(/initial\-scale=([\d\.]+)/);
+        if (match) {
+          scale = parseFloat(match[1]);
+          dpr = parseInt(1 / scale);
+        }
+      } else if (flexibleEl) {
+        var content = flexibleEl.getAttribute('content');
+        if (content) {
+          var initialDpr = content.match(/initial\-dpr=([\d\.]+)/);
+          var maximumDpr = content.match(/maximum\-dpr=([\d\.]+)/);
+          if (initialDpr) {
+            dpr = parseFloat(initialDpr[1]);
+            scale = parseFloat((1 / dpr).toFixed(2));
+          }
+          if (maximumDpr) {
+            dpr = parseFloat(maximumDpr[1]);
+            scale = parseFloat((1 / dpr).toFixed(2));
+          }
+        }
+      }
+      if (!dpr && !scale) {
+        var isAndroid = win.navigator.appVersion.match(/android/gi);
+        var isIPhone = win.navigator.appVersion.match(/iphone/gi);
+        var devicePixelRatio = win.devicePixelRatio;
+        if (isIPhone) {
+          // iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案
+          if (devicePixelRatio >= 3 && (!dpr || dpr >= 3)) {
+            dpr = 3;
+          } else if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)) {
+            dpr = 2;
+          } else {
+            dpr = 1;
+          }
+        } else {
+          // 其他设备下，仍旧使用1倍的方案
+          dpr = 1;
+        }
+        scale = 1 / dpr;
+      }
+      docEl.setAttribute('data-dpr', dpr);
+      if (!metaEl) {
+        metaEl = doc.createElement('meta');
+        metaEl.setAttribute('name', 'viewport');
+        metaEl.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+        if (docEl.firstElementChild) {
+          docEl.firstElementChild.appendChild(metaEl);
+        } else {
+          var wrap = doc.createElement('div');
+          wrap.appendChild(metaEl);
+          doc.write(wrap.innerHTML);
+        }
+      }
+      function refreshRem() {
+        var width = docEl.getBoundingClientRect().width;
+        if (width / dpr > 540) {
+          width = 540 * dpr;
+        }
+        var rem = width / 10;
+        docEl.style.fontSize = rem + 'px';
+        flexible.rem = win.rem = rem;
+      }
+      win.addEventListener('resize', function () {
+        clearTimeout(tid);
+        tid = setTimeout(refreshRem, 300);
+      }, false);
+      win.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+          clearTimeout(tid);
+          tid = setTimeout(refreshRem, 300);
+        }
+      }, false);
+      if (doc.readyState === 'complete') {
+        doc.body.style.fontSize = 12 * dpr + 'px';
+      } else {
+        doc.addEventListener('DOMContentLoaded', function (e) {
+          doc.body.style.fontSize = 12 * dpr + 'px';
+        }, false);
+      }
+      refreshRem();
+      flexible.dpr = win.dpr = dpr;
+      flexible.refreshRem = refreshRem;
+      flexible.rem2px = function (d) {
+        var val = parseFloat(d) * this.rem;
+        if (typeof d === 'string' && d.match(/rem$/)) {
+          val += 'px';
+        }
+        return val;
+      }
+      flexible.px2rem = function (d) {
+        var val = parseFloat(d) / this.rem;
+        if (typeof d === 'string' && d.match(/px$/)) {
+          val += 'rem';
+        }
+        return val;
+      }
+    })(window, window['lib'] || (window['lib'] = {}))
+```
+
+- 安装`postcss-plugin-px2rem`后在postcss.config.js加入代码
+```javascript
+module.exports = {
+    plugins: [
+        require('autoprefixer')({
+            overrideBrowserslist: [
+                'last 2 versions',
+                '> 1%'
+            ]
+        }),
+        require('autoprefixer')({
+            rootValue: 100, //换算基数， 默认100  ，这样的话把根标签的字体规定为1rem为50px,这样就可以从设计稿上量出多少个px直接在代码中写多上px了。
+            unitPrecision: 5, //允许REM单位增长到的十进制数字。
+            propWhiteList: [],  //默认值是一个空数组，这意味着禁用白名单并启用所有属性。
+            propBlackList: [], //黑名单
+            exclude: /(node_module)/,  //默认false，可以（reg）利用正则表达式排除某些文件夹的方法，例如/(node_module)/ 。如果想把前端UI框架内的px也转换成rem，请把此属性设为默认值
+            selectorBlackList: [], //要忽略并保留为px的选择器
+            ignoreIdentifier: false,  //（boolean/string）忽略单个属性的方法，启用ignoreidentifier后，replace将自动设置为true。
+            replace: true, // （布尔值）替换包含REM的规则，而不是添加回退。
+            mediaQuery: false,  //（布尔值）允许在媒体查询中转换px。
+            minPixelValue: 3 //设置要替换的最小像素值(3px会被转rem)。 默认 0
+        }),
+    ]
+};
+```
 
 #### 移动端事件
 - 事件对象属性：changedTouches、touches、targetTouches
