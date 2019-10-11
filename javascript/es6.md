@@ -236,3 +236,134 @@ notebook: JavaScript
     arr
     // [[5], [5], [5]]
     ```
+
+## 新数据结构
+---
+  - `set`
+    - set 本身是一个构造函数，构造出来的结果类似于数组，但成员唯一不重复
+      ```javascript
+      const s = new Set();
+
+      [2, 3, 5, 4, 5, 2, 2].forEach(x => s.add(x));
+
+      for (let i of s) {
+        console.log(i);
+      } // 2,3,5,4
+
+      ```
+      `Set`函数接受一个`可迭代对象iterable`作为参数，用来初始化
+      > iterable 包括 字符串，数组，类数组对象
+      ```javascript
+      // 例一
+      const set = new Set([1, 2, 3, 4, 4]);
+      [...set]
+      // [1, 2, 3, 4]
+
+      // 例二
+      const items = new Set('abccdeefgg');
+      [...items]
+      // [a,b,c,d,e,f,g]
+      ```
+      向 Set 加入值的时候，不会发生类型转换，`所以5和"5"是两个不同的值`。Set 内部判断两个值是否不同，使用的算法叫做`“Same-value-zero equality”`，它类似于精确相等运算符（===），主要的区别是向 Set 加入值时认为NaN等于自身，而精确相等运算符认为NaN不等于自身。
+      ```javascript
+      let set = new Set();
+      let a = NaN;
+      let b = NaN;
+      set.add(a);
+      set.add(b);
+      set // Set {NaN}
+      ```
+    - `Set`的实例方法和属性
+      - 两个属性
+        - `constructor`: 构造函数，默认是set本身
+        -  `size`: 实例属性，返回实例成员总数
+
+      - `add(value)`: 实例方法。向实例中添加成员，重复的成员不会重复添加，返回值为 Set 结构本身
+        ```javascript
+        const s = new Set()
+        s.add(1)
+        s.add(2)
+        s.add(1)
+
+        s.size // 2
+
+        s.add(NaN)
+        s.add(NaN)
+        s.size // 3 NaN会被认为是相同的，不会重复添加
+
+        // 可以链式调用
+        s.add(5).add(6)
+        s.size // 5
+        ```
+      - `delete(value)`：实例方法。删除实例成员，返回值为 boolean ，用于判断是否删除成功
+        ```javascript
+        const s = new Set([1,2,3,3,4,4])
+        s.size // 4
+        s.delete(2) // true
+        s.size // 3
+        ```
+      - `has(value)`： 实例方法。判断实例内是否有某成员， 返回值为 boolean， true 为含有，false 为没有
+        ```javascript
+        const s = new Set([1,2,3,4,5,7,7])
+        s.has(6) // false
+        s.has(7) // true
+        ```
+      - `clear()`： 实例方法。清除实例内所有成员，没有返回值
+        ```javascript
+        const s = new Set([1,2,3,4,5,5])
+        s.clear()
+        s.size // 0
+        ```
+      - `keys()`、`values()`和`forEach()`： 实例方法。返回值都是遍历器对象。由于 Set 结构没有键名，只有键值，或者说键名和键值一致，所以 `keys()`和`values()`的结果一致。`entries()`方法返回是键名和键值的组合。
+        ```javascript
+        const s1 = new Set(['red', 'blue', 'green'])
+        for(let item of s1.keys()) {
+          console.log(item)
+        }
+        // red
+        // blue
+        // green
+        
+        for(let item of s1.values()) {
+          console.log(item)
+        }
+        // red
+        // blue
+        // green
+
+        for(let item of s1.entries()) {
+          console.log(item)
+        }
+        // ['red', 'red']
+        // ['blue', 'blue']
+        // ['green', 'green']
+        ```
+      - `forEach()`： 实例方法。
+        ```javascript
+        const s = new Set([1,2,3])
+
+        s.forEach((value, key, set) => {
+          console.log(key + ':' + value)
+        });
+        // 1: 1
+        // 2: 2
+        // 3: 3
+
+        ```
+      - 关于`Set`数据类型的一些操作
+        - 和扩展运算符 `...` 的使用：
+
+           `...`扩展运算符内部使用 `for...of`遍历，所以`...`扩展符可以作用于 Set 集合,`[...new Set([1,2,3,4,5,5])]`、`[...new Set('aabbccdd')]`之后便可用数组方法便利地操作数据
+
+        - 遍历Set同时改变内部数据
+          目前没有直接方法在遍历Set结构同时改变内部值的方法，可以通过间接方法实现
+          ```javascript
+          // 方法1: 原Set结构映射为新的结构，然后再赋值到原Set结构
+          var set1 = new Set([1,2,3,4])
+          set1 = new Set([...set1].map(val => val*2)) // 键值变为原来两杯
+
+          // 方法2: 使用 Array.from() 方法
+          var set2  = new Set([5,6,7,8,9])
+          set2 = new Set(Array.from(set, (val) => val*2 ))
+          ``` 
+  - `Map`
