@@ -366,4 +366,112 @@ notebook: JavaScript
           var set2  = new Set([5,6,7,8,9])
           set2 = new Set(Array.from(set, (val) => val*2 ))
           ``` 
-  - `Map`
+  - `Map` JS的 Object 对象，只能用字符串作为键值，而`Map` 结构的键值可以是字符串外的其他数据类型
+    ```javascript
+    const data = {};
+    const element = document.getElementById('myDiv');
+
+    data[element] = 'metadata';
+    data['[object HTMLDivElement]'] // "metadata"
+    // DOM 节点作为对象data的键，但是由于对象只接受字符串作为键名，所以element被自动转为字符串[object HTMLDivElement]。
+
+    const m = new Map()
+    const o = {p: 'Hello World'}
+
+    m.set(o, 'content')
+    m.get(0) // content
+    ```
+
+    `Map` 接受任何具有 Iterator 接口、且每个成员都是一个双元素的数组的数据结构作为参数
+    ```javascript
+    const set = new Set([
+      ['name', '124'],
+      ['age', '24'],
+    ])
+
+    const map = new Map(set)
+    map.get('name') // 124
+    map.get('age') // 24
+
+    const map2 = new Map([['foo', 'bar']])
+    const map3 = new Map(map2)
+    map3.get('foo') // bar
+    ```
+    以引用类型数据作为键值时，要注意设值和取值的键名
+    ```javascript
+    const map = new Map()
+
+    map.set(['a'], 'content')
+    map.get(['a']) // undefined
+
+    const a = ['a']
+    map.set(a, 'content')
+    map.get(a) // content
+    ```
+
+      - `Map` 的实例方法和属性
+        - 属性
+          - `size`:实例属性，返回成员总数
+        - 方法
+          - `set(key, val)`：设置map的键值对，参数分别为 `key`和对应的`vale`， 返回值是当前map对象
+            ```javascript
+            const map = new Map()
+            map.set('name', 'zhangsan').set('age', 24)
+            map.get('name') // zhangsan
+            map.get('age') // 24
+
+            map.set('age', 30)
+            map.get('age') // 30 
+            ```
+        - `get(key)`： 读取map对象的值，返回为键值对的值
+          ```javascript
+          const map = new Map()
+          const hello = function() {console.log('aaa')}
+          map.set(hello, 'es6')
+          map.get(hello) // es6
+          ```
+        - `has(key)`：返回值为boolean
+          ```javascript
+          const map = new Map()
+          map.set('name', 'zhangsan')
+          map.has('name') // true
+          map.has('age') // false
+          ```
+        - `delete(key)`：删除某键值对，返回值为boolean
+          ```javascript
+          const map = new Map([['name', 'zhangsan'], ['age', 24]])
+          map.delete('name') // true
+          map.get('name') // undefined
+          ```
+        - `clear()`：清除map对象成员，没有返回值
+          ```javascript
+          const map = new Map([['name', 'zhangsan'], ['age', 24]])
+          map.get('name') // zhangsan
+          map.clear()
+          map.get('name') // undefined
+          ```
+        - `keys()`、`values()`和`entries()`： 遍历器。
+          ```javascript
+          const map = new Map([['F', 'no'], ['T', 'yes']])
+
+          for(let item of map.keys()) {
+            console.log(item)
+          }
+          // F
+          // T
+          for(let item of map.values()) {
+            console.log(item)
+          }
+          // no
+          // yes
+          for(let item of map.entries()) {
+            console.log(item[0] + ':' +item[1])
+          }
+          // F: no
+          // T: yes
+          
+          // map结构转换为数组
+          [...map.keys()] // ['F', 'T']
+          [...map.values()] // ['no', 'yes']
+          [...map.entries()] // [['F', 'no'], ['T', 'yes']]
+          ```
