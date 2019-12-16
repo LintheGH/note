@@ -236,6 +236,148 @@ notebook: JavaScript
     arr
     // [[5], [5], [5]]
     ```
+## 新数据类型
+---
+- `Symbol`
+  
+  - `Symbol()`：通过`Symbol()`创建的值都是独一无二的。
+    - `Symbol()`创建的值为原始值类型，所以，`new Symbol()`会报错。
+    - `Symbol()`方法接受一个参数作为标示区分，如果参数是对象，则先调用对象的`toString`方法，再生成Symbol值
+      ```javascript
+      const s = Symbol() // Symbol
+      const s2 = Symbol('foo') // Symbol('foo')
+
+      const obj = {
+        toString() {
+          return 'abc'
+        }
+      }
+      const s3 = Symbol(obj) // Symbol('abc')
+      ```
+    - `Symbol()`的参数仅作为标示区分，两个参数相同的Symbol是不同的
+      ```javascript
+      const s = Symbol('foo')
+      const s2 = Symbol('foo')
+
+      s === s2 // false
+      ```
+    > Symbol 值不能参与运算，会报错
+
+    > Symbol 可以转换成String类型数据， `String(Symbol('foo'))`输出字符串`'Symbol(foo)'`
+
+    > Symbol 可以转换为Boolean类型， `Boolean(Symbol())`的结果为`true`
+
+  - `Symbol.prototype.description`属性：在创建Symbol类型数据时如果传入参数作为描述，此属性可以返回描述
+    ```javascript
+    const s = Symbol('foo')
+    s.description // foo
+    ```
+  - `Symbol`作为属性名的遍历：该属性不会出现在`for...in`、`for...of`、`Object.keys()`、`JSON.Stringify()`、`Object.getOwnPropertyNames()`中
+    > `Object.getOwnPropertySymbols()` 可以返回一个以`Symbol`作为属性名的Symbol数组
+
+  - `Symbol.for()``Symbol.keyFor()`： `Symbol.for()`表示重用一个Symbol，`Symbol.keyFor()`返回一个已登记的Symbol值的key
+    ```javascript
+    var s = Symbol('foo')
+    var s2 = Symbol('foo')
+    s === s2 // false
+
+    var s3 = Symbol.for('foo')
+    var s4 = Symbol.for('foo')
+    s3 === s4 // true
+    ```
+    使用`Symbol.for()`时，系统会全局搜索以`'foo'`作为key的Symbol的值，没有则创建，有则返回此symbol值。
+    > `Symbol.for()`创建是symbol值会在全局登记，而`Symbol()`创建的symbol值不会全局登记
+
+    ```javascript
+    const s = Symbol.for('foo')
+    Symbol.keyFor(s) // 'foo'
+    
+    const s2 = Symbol('foo')
+    Symbol.keyFor(s2) // undefined
+
+    ```
+
+## `Iterator`遍历器和`for...of`循环
+---
+  - `Iterator`遍历器：为各种数据结构提供统一的，处理（遍历）数据成员的一种接口机制。当数据集合拥有了遍历器（Iterator），则此数据集合为可遍历的数据集合，则可用于`for...of``Set()``Map()`的方法操作。
+    - `Iterator`的模拟：
+      - `Iterator`的遍历过程：
+        1. 创建一个指针对象，指向当前的数据结构的其实位置，也就是说，遍历器对象实际是一个指针对象
+        2. 第一次调用指针对象的`next()`，将指针指向第一个数据成员
+        3. 第二次调用指针对象的`next()`，将指针指向第二个数据成员
+        4. 不断调用`next()`，直到所有数据成员被遍历，指针指向数据结构的结束位置
+        > 每次调用`next()`，都会返回成员信息：一个包含成员和遍历结束标志{value, done}
+      ```javascript
+      function markIterator(array) {
+        let nextIndex = 0
+        return {
+          next() {
+            return (nextIndex<arr.length?
+            {value: array[nextIndex], done: false}:
+            {value:undefined, done: true}
+            )
+          }
+        }
+      }
+      
+      var it = markIterator(['a', 'b']) // 1. 创建指针对象，{next(){...}}
+
+      it.next() // 2. 指针指向第一个成员 {value: 'a', done: false}
+      it.next() // 3. 指针指向第二个成员 {value: 'b', done: false}
+      it.next() // 4. 所有成员已被遍历，指针指向结束位置 {value: undefined, done: true}
+
+
+      // 对于遍历器来说： value: undefined和done: false可以忽略，上面可以简写成：
+      /*  
+        function markIterator(array) {
+          let nextIndex = 0
+          return {
+            next() {
+              return (nextIndex<arr.length?{value: array[nextIndex]}:{done: true})
+            }
+          }
+        }
+      */
+      ```
+
+    - 默认 `Iterator` 接口
+
+      ES6 规定默认的`Iterator`接口部署在`Symbol.Iterator`上。`Symbol.Iterator`键名是一个Symbol特殊值，值是一个函数，执行此函数则返回一个遍历器
+
+      - 原生拥有`Iterator`的数据结构： 
+        - `Array`
+        - `String`
+        - `Set`
+        - `Map`
+        - 类Array对象
+        - 函数的 arguments 对象
+        - NodeList 对象
+    - 拥有`Iterator`的数据结构的`for...of`循环：当数据结构拥有了`Iterator`，就可以被`for...of`操作，因此，`for...of`的操作实际上是调用`Iterator`接口产生的遍历器
+      ```javascript
+      const arr = ['red', 'green', 'blue'];
+
+      for(let v of arr) {
+        console.log(v); // red green blue
+      }
+
+      const obj = {};
+      obj[Symbol.iterator] = arr[Symbol.iterator].bind(arr);
+
+      for(let v of obj) {
+        console.log(v); // red green blue
+      }
+      ```
+    - 调用`Iterator`的场合：
+      - 结构赋值
+      - 扩展运算符`...`
+      - `Generator`
+      - `for...of`
+      - `Array.form()`
+      - `new Set()`
+      - `new Map()`
+      - `Promise.all()`
+      - `Promise.race()`
+      
 
 ## 新数据结构
 ---
@@ -252,7 +394,7 @@ notebook: JavaScript
 
       ```
       `Set`函数接受一个`可迭代对象iterable`作为参数，用来初始化
-      > iterable 包括 字符串，数组，类数组对象
+      > iterable 包括 字符串，数组，类数组对象等可遍历对象
       ```javascript
       // 例一
       const set = new Set([1, 2, 3, 4, 4]);
@@ -314,7 +456,7 @@ notebook: JavaScript
         s.clear()
         s.size // 0
         ```
-      - `keys()`、`values()`和`forEach()`： 实例方法。返回值都是遍历器对象。由于 Set 结构没有键名，只有键值，或者说键名和键值一致，所以 `keys()`和`values()`的结果一致。`entries()`方法返回是键名和键值的组合。
+      - `keys()`、`values()`和`entries()`： 实例方法。返回值都是遍历器对象。由于 Set 结构没有键名，只有键值，或者说键名和键值一致，所以 `keys()`和`values()`的结果一致。`entries()`方法返回是键名和键值的组合。
         ```javascript
         const s1 = new Set(['red', 'blue', 'green'])
         for(let item of s1.keys()) {
@@ -332,7 +474,7 @@ notebook: JavaScript
         // green
 
         for(let item of s1.entries()) {
-          console.log(item)
+          console.log(item) 
         }
         // ['red', 'red']
         // ['blue', 'blue']
