@@ -15,6 +15,9 @@ Echarts 官网中提供有配置echarts主题所需的配置工具，可以供�
 
 > 可以看到只有基本的一些配置，详细的配置还是需要到实例中的`option`配置项中去配置
 
+
+测试2
 ### echarts 折线图波动过大问题
 - 问题出现：echarts折线图中当增加dataZoom，修改start大于0的时候，会出现折线混乱，变成竖直的线，绘制有问题 github issues： #4654
   - 问题解决办法：在dataZoom中增加filterMode: ‘empty’
+ 
