@@ -42,11 +42,21 @@ notebook: other
     - API
         1. 
 
-- umi
-    - 
-
-
-### ajax复习，文件时上传的实现
-### webgl
-### 多媒体
-### svg canvas
+- umi： roadho + 路由
+    - pages目录下文件即为路由
+    - 通过注释配置路由（在约定是路由中有效）
+        ```javascript
+            /**
+             * title: index page
+             * Routes: 
+             * - ./src/index/a.js
+             * - ./src/index/b.js
+            **/
+           // 生成：
+           [
+                { path: '/', component: './index.js',
+                    title: 'Index Page',
+                    Routes: [ './src/a.js', './src/b.js' ],
+                },
+            ]
+        ```
