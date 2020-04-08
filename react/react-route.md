@@ -194,3 +194,15 @@ react-router的使用
       "react"
     ],
     ```
+
+
+
+---
+
+- `react-router`相关梳理
+
+  - 什么是`react-router-dom`、`react-router`、`react-router-native`？
+    总括来说，`react-router`是react管理路由的工具的总称，其中包括核心的`react-router`，专门为web端的dom绑定操作的`react-router-dom`， 专门为`react-native`使用的`react-router-native`，此外还有`react-router-config`和`react-router-redux`，在react-router的官方GitHub上可以看到起关系
+    ![react-router](https://github.com/LintheGH/images/tree/master/note/react-router.png)
+    
+    在项目中

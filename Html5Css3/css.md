@@ -57,3 +57,8 @@ notebook: HTML5css3
     效果：
 
     ![image](https://raw.githubusercontent.com/LintheGH/images/master/note/multiplebackground.png)
+
+
+- `vw`、`vh` 和 `height: 100%` `width: 100%`的区别
+
+  vw计算的是整个视口的宽度，包括滚动条。百分比计算宽度的后会不包括滚动条。同理`vh`和`·height: 100%`也一样

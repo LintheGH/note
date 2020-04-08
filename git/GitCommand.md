@@ -55,3 +55,19 @@
   5. 如果git pull提示no tracking information，则说明本地分支和远程分支的链接关系没有创建，用命令`git branch --set-upstream-to <branch-name> origin/<branch-name>`。
 
   这就是多人协作的工作模式，一旦熟悉了，就非常简单。
+
+- 配置gitignore
+  - 在项目未push到远程仓库时，在git本地仓库根目录创建 .gitignore 文件（文件没有名字，无法在系统中创建，需要用git bash 窗口中使用 linux 命令创建
+    - # 以'#'开始的行，被视为注释. 
+    - 以斜杠“/”开头表示目录；
+    - 以星号“*”通配多个字符；
+    - 以问号“?”通配单个字符
+    - 以方括号“[]”包含单个字符的匹配列表；
+    - 以叹号“!”表示不忽略(跟踪)匹配到的文件或目录；
+  
+  -  push后再更新 gitignore 文件后，提交远程仓库并不会生效，原因在于 git 已经创建了已经提交到远程仓库到文件到版本控制，此时需要运行一下命令
+    ```
+      git rm -f --cached . // 清除已经托管在git中文件
+      git add . // 重新托管文件，此时会依据 .gitignore 文件中到配置生效
+      git commit -m 'update .gitignore' // 提交信息
+    ```

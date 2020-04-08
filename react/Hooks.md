@@ -167,7 +167,7 @@ function Example() {
     ```
     `useCallBack`的使用和`useEffect`相同，不过useCallBack生成一个回调函数。在第二个参数（数组）中的任一值改变时，会重新生成一个回调函数，在`useEffect`中的第二个参数监听这个生成的回调函数即可做进一步的操作
 
-- `useRef`：生成一个ref对象，对象中的`.current`被传入初始的值，ref对象在整个组件的生命周期中不会自动改变，基于此，ref对象一个强大的作用在于它能够保存某次state, 用于某些操作.
+- `useRef`：生成一个可变的ref对象，对象中的`.current`被初始化为传入初始的值，ref对象在整个组件的生命周期中不会自动改变，基于此，ref对象一个强大的作用在于它能够保存某次state, 用于某些操作.
 
     ```javascript
     const Demo = (props) => {
