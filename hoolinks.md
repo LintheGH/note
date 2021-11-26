@@ -99,5 +99,5 @@
   
   > group.length > 6 时，自动开启右侧快捷导航。
   
-  
+- `<HLTable />`
 
